@@ -1,6 +1,6 @@
 # Java Threads 3rd Edition, by Scott Oaks
 
-![logo](/home/mwangi/NetBeansProjects/Playground/java-threads-3rd-edition/java-threads-3rd-edition-examples/logo.png)
+![logo](https://github.com/IdelsTak/java-threads-3rd-edition-examples/blob/master/logo.png)
 
 Imported from [GitLab repo](https://resources.oreilly.com/examples/9780596007829/)
 
