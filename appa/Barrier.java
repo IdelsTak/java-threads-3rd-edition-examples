@@ -26,40 +26,44 @@
  * SPECIFICALLY DISCLAIMS ANY EXPRESS OR IMPLIED WARRANTY OF FITNESS FOR
  * HIGH RISK ACTIVITIES.
  */
-
 package javathreads.examples.appa;
 
 public class Barrier {
-        private int threads2Wait4;
-        private InterruptedException iex;
 
-        public Barrier (int nThreads) {
-                threads2Wait4 = nThreads;
+    private int threads2Wait4;
+    private InterruptedException iex;
+
+    public Barrier(int nThreads) {
+        threads2Wait4 = nThreads;
+    }
+
+    public synchronized int waitForRest()
+            throws InterruptedException {
+        int threadNum = --threads2Wait4;
+
+        if (iex != null) {
+            throw iex;
         }
-
-        public synchronized int waitForRest()
-                throws InterruptedException {
-                int threadNum = --threads2Wait4;
-
-                if (iex != null) throw iex;
-                if (threads2Wait4 <= 0) {
-                        notifyAll();
-                        return threadNum;
-                }
-                while (threads2Wait4 > 0) {
-                        if (iex != null) throw iex;
-                        try {
-                                wait();
-                        } catch (InterruptedException ex) {
-                                iex = ex;
-                                notifyAll();
-                        }
-                }
-                return threadNum;
+        if (threads2Wait4 <= 0) {
+            notifyAll();
+            return threadNum;
         }
-
-        public synchronized void freeAll() {
-                iex = new InterruptedException("Barrier Released by freeAll");
+        while (threads2Wait4 > 0) {
+            if (iex != null) {
+                throw iex;
+            }
+            try {
+                wait();
+            } catch (InterruptedException ex) {
+                iex = ex;
                 notifyAll();
+            }
         }
+        return threadNum;
+    }
+
+    public synchronized void freeAll() {
+        iex = new InterruptedException("Barrier Released by freeAll");
+        notifyAll();
+    }
 }
